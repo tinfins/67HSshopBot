@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-from dotenv import load_dotenv
+from dotenv import load_dotenv, find_dotenv
 import pathlib
 import os
 from os import listdir
@@ -25,7 +25,7 @@ import pytz
 #Familiarising yourself with the documentation will greatly help you in creating your bot and using cogs.
 
 
-load_dotenv()
+load_dotenv(find_dotenv())
 TOKEN = os.getenv('DISCORD_TOKEN')
 
 def get_prefix(bot, message):
