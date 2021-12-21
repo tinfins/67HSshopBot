@@ -17,7 +17,7 @@ load_dotenv(find_dotenv())
 TOKEN = os.getenv('DISCORD_TOKEN')
 
 # Set up logging for application to write to
-logging.config.fileConfig(fname='src/utils/config.ini', disable_existing_loggers=False)
+logging.config.fileConfig(fname='logs/config.ini', disable_existing_loggers=False)
 logger = logging.getLogger(__name__)
 
 # Cog directory. 'meme.py' in cogs directory is be cogs.meme
