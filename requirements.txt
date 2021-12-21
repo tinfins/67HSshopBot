@@ -1,5 +1,4 @@
-discord.py >= 1.3.4
-discord
-pendulum
-discord-pretty-help
-pytz
+discord~=1.7.3
+discord-py-slash-command=3.0.3
+python-dotenv~=0.19.2
+pytz~=2021.3

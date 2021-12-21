@@ -1,30 +1,72 @@
 # 67HS Python Discord Bot
 
-Welcome to the Python Discord bot for NNSY FMB 67HS!
+[![Python latest](https://img.shields.io/static/v1?label=Python&message=latest&color=blue&style=plastic&logo=Python&logoColor=ffffff)](https://www.python.org/downloads/)
 
-This Discord bot is currently running on gcp compute.
+[![Commits](https://img.shields.io/github/last-commit/tinfins/67HSshopBot/main?style=plastic&logo=GitHub)](https://github.com/tinfins/67HSshopBot/commits/main)
 
-# Files
+[![Open Issues](https://img.shields.io/github/issues/tinfins/67HSshopBot?style=plastic&logo=GitHub)](https://github.com/tinfins/67HSshopBot/issues?q=is%3Aopen+is%3Aissue)
+[![Closed Issues](https://img.shields.io/github/issues-closed/tinfins/67HSshopBot?style=plastic&logo=GitHub)](https://github.com/tinfins/67HSshopBot/issues?q=is%3Aissue+is%3Aclosed)
 
-- `cogs`: Contains different Cogs (modules) for different bot functions
-- `README.md`: This is me.
-- `requirements.txt`: Store here the pip modules you need.
-- `app.py`: This is the bot code.
+67HS shop bot is currently configured for one server, but the code is provided for others to use
 
-# Interact
+The bot is written in Python using the discord-py-interactions and discord.py libraries. Commands are added to the bot via cogs
 
-Type `?help or /help`!
+## For Developers
+For Developers interested in using our application as a base to building their own app or for learning purposes, please see our [LICENSE](https://github.com/tinfins/discordParkingPassBot/blob/main/LICENSE).
+  
+## Development Environment Setup
+### Pre-requisites
+Python >= 3.7
+### Required dependencies
+-   aiohttp==3.7.4.post0
+-   async-timeout==3.0.1
+-   attrs==21.2.0
+-   chardet==4.0.0
+-   discord==1.0.1
+-   discord-py-interactions==3.0.2
+-   discord.py==1.7.3
+-   idna==3.2
+-   multidict==5.1.0
+-   python-dotenv==0.15.0
+-   pytz==2021.1
+-   typing-extensions==3.10.0.2
+-   yarl==1.6.3
+  
+(See requirements.txt for most up to date dependencies)
+  
+### Bot Credentials
+Store your discord bot token in a file titled .env in the top-level project directory
+  
+### Environment Setup
+-   Install Python 3.7.1 or higher
 
-![](https://cdn.glitch.com/0d022b8f-6258-470b-a559-0bf7d70c9c99%2Fsemper_gumby.png?v=1601089383124)
+-   Clone github repository
+    -   All Platforms: git clone https://github.com/tinfins/discordParkingPassBot.git
 
-# License
+-   Install sqlite3
+    -   sudo apt install sqlite3 libsqlite3-dev
 
-This project is licensed under the MIT license.
+-   Install virtualenv
+    -   All platforms: pip install virtualenv
 
----
+-   Create a Python virtual environment
+    -   Windows: virtualenv --python C:\Path\To\Python\python.exe venv
+    -   OSX/Linux: virtualenv venv
 
-[Invite the bot on a server](https://discord.com/api/oauth2/authorize?client_id=743355320277139507&permissions=8&scope=bot)
+-   Activate your virtual environment
+    -   Windows: .\venv\Scripts\activate
+    -   OSX/Linux: source venv/bin/activate
 
----
+-   Install required dependencies
+    -   All Platforms: pip3 install -r requirements.txt
+    -   If updating: pip install -r requirements.txt --upgrade
+  
+### Running
+Run the bot by starting your virtual environment and use python3 app.py in the top level directory to run the bot, then invite it to your server.
 
-Coded by [TinFins](https://github.com/tinfins).
+Ensure the bot has permissions to send messages in your default system channel.
+  
+For a 24/7 online presence of your bot, creating a systemd service file (example included) or installing supervisor (sudo apt install supervisor) to manage your processes is recommended.
+  
+## License
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/tinfins/discordParkingPassBot/blob/main/LICENSE) file for details.

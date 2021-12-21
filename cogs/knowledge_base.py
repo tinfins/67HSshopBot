@@ -1,27 +1,21 @@
-import discord
-from discord.ext import commands
+import logging
+import logging.config
 import datetime as dt
 import pytz
-
-"""A simple cog example with simple commands. Showcased here are some check decorators, and the use of events in cogs.
-For a list of inbuilt checks:
-http://dischttp://discordpy.readthedocs.io/en/rewrite/ext/commands/api.html#checksordpy.readthedocs.io/en/rewrite/ext/commands/api.html#checks
-You could also create your own custom checks. Check out:
-https://github.com/Rapptz/discord.py/blob/master/discord/ext/commands/core.py#L689
-For a list of events:
-http://discordpy.readthedocs.io/en/rewrite/api.html#event-reference
-http://discordpy.readthedocs.io/en/rewrite/ext/commands/api.html#event-reference
-All embeds created utilizing the website https://leovoel.github.io/embed-visualizer/
-"""
+import discord
+from discord.ext import commands
+from discord_slash import cog_ext, SlashContext
 
 
 class KnowledgeBase(commands.Cog, name='Knowledge Base'):
     """Shop Knowledge Base"""
 
     def __init__(self, bot):
+        self.logger = logging.getLogger(__name__)
         self.bot = bot
         self.tz = pytz.timezone('America/New_York')
 
+    '''
     @commands.command(name='intro', aliases=['introduction', 'info'])
     async def intro(self, ctx):
         """Shop 67HS Information."""
@@ -107,53 +101,34 @@ class KnowledgeBase(commands.Cog, name='Knowledge Base'):
             await ctx.message.delete()
         # Log entry for command execution
         print(f"{ts} EST: {ctx.author} executed '/quals'\n")
+    '''
 
-    @commands.command(name='college', aliases=['ta'])
-    async def college(self, ctx):
+    @cog_ext.cog_slash(name="college", description="College Information")
+    async def college(self, ctx: SlashContext):
         """College/TA Information."""
 
         ts = dt.datetime.now(self.tz).strftime('%d-%b-%y %H:%M:%S')
 
-        embed = discord.Embed(title="College and Tuition Assistance.", colour=discord.Colour(0x29afba), description="Higher education and use of Tuition Assistance is highly encouraged at NNSY. \n\nThe [collegeSmart](https://collegesmart.herokuapp.com/) is a good starting point to gain eligibility to use TA and help you select a college that is right for you.\n\nThe site is informational only and has no affiliation with the U.S. Navy or Department of Defense.")
+        embed = discord.Embed(title="College and Tuition Assistance.", colour=discord.Colour(0x29afba),
+                              description="Higher education and use of Tuition Assistance is highly encouraged at NNSY. \n\nThe [collegeSmart](https://collegesmart.herokuapp.com/) is a good starting point to gain eligibility to use TA and help you select a college that is right for you.\n\nThe site is informational only and has no affiliation with the U.S. Navy or Department of Defense.")
 
-        embed.set_image(url="https://cdn.glitch.com/0d022b8f-6258-470b-a559-0bf7d70c9c99%2FCS_logo_wht_stacked.png?v=1601094460835")
-        embed.set_footer(text="Made in Python with discord.py@rewrite | https://github.com/tinfins/", icon_url="http://i.imgur.com/5BFecvA.png")
+        embed.set_image(
+            url="https://cdn.glitch.com/0d022b8f-6258-470b-a559-0bf7d70c9c99%2FCS_logo_wht_stacked.png?v=1601094460835")
+        embed.set_footer(text="Made in Python with discord.py@rewrite | https://github.com/tinfins/",
+                         icon_url="http://i.imgur.com/5BFecvA.png")
+        self.logger.info(f"{ts} EST: {ctx.author} executed '/college'\n")
+        return await ctx.send(content="College and Tuition Assistance", embed=embed, hidden=True)
 
-        await ctx.author.send(content="College and Tuition Assistance", embed=embed)
-
-        if not isinstance(ctx.channel, discord.channel.DMChannel):
-            await ctx.message.delete()
-        # Log entry for command execution
-        print(f"{ts} EST: {ctx.author} executed '/college'\n")
-
-
-    @commands.cooldown(1, 30, commands.BucketType.user)
-    @commands.command(name='gumby', aliases=['semper'], hidden=True)
-    async def gumby(self, ctx):
-        """Posts semper gumby image"""
-
-        ts = dt.datetime.now(self.tz).strftime('%d-%b-%y %H:%M:%S')
-
-        embed = discord.Embed()
-
-        embed.set_image(url="https://cdn.glitch.com/0d022b8f-6258-470b-a559-0bf7d70c9c99%2Fsemper_gumby.png?v=1601089383124")
-
-        await ctx.send(embed=embed)
-
-        if not isinstance(ctx.channel, discord.channel.DMChannel):
-            await ctx.message.delete()
-        print(f"{ts} EST: {ctx.author} executed '/semper_gumby'\n")
+    @college.error
+    async def college_error(self, ctx: SlashContext, error):
+        """
+        Error catcher for college command
+        :param ctx:
+        :param error:
+        """
+        msg = f'college error: {error}'
+        await ctx.send(msg, hidden=True)
 
 
-    @commands.cooldown(1, 30, commands.BucketType.user)
-    @commands.Cog.listener('on_message')
-    async def on_message(self, message):
-        if 'semper gumby' in message.content.lower():
-            embed = discord.Embed()
-            embed.set_image(url="https://cdn.glitch.com/0d022b8f-6258-470b-a559-0bf7d70c9c99%2Fsemper_gumby.png?v=1601089383124")
-            await message.channel.send(embed=embed)
-
-# The setup fucntion below is neccesarry. Remember we give bot.add_cog() the name of the class in this case SimpleCog.
-# When we load the cog, we use the name of the file.
 def setup(bot):
     bot.add_cog(KnowledgeBase(bot))

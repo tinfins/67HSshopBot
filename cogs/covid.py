@@ -1,28 +1,26 @@
-import discord
-from discord.ext import commands
+"""
+A cog extension for the covid info functions of the bot app
+"""
+
+import logging
+import logging.config
 import datetime as dt
 import pytz
-
-"""A simple cog example with simple commands. Showcased here are some check decorators, and the use of events in cogs.
-For a list of inbuilt checks:
-http://dischttp://discordpy.readthedocs.io/en/rewrite/ext/commands/api.html#checksordpy.readthedocs.io/en/rewrite/ext/commands/api.html#checks
-You could also create your own custom checks. Check out:
-https://github.com/Rapptz/discord.py/blob/master/discord/ext/commands/core.py#L689
-For a list of events:
-http://discordpy.readthedocs.io/en/rewrite/api.html#event-reference
-http://discordpy.readthedocs.io/en/rewrite/ext/commands/api.html#event-reference
-"""
+import discord
+from discord.ext import commands
+from discord_slash import cog_ext, SlashContext
 
 
 class CovidCog(commands.Cog, name='COVID-19 info'):
     """COVID-19 Testing Info"""
 
     def __init__(self, bot):
+        self.logger = logging.getLogger(__name__)
         self.bot = bot
         self.tz = pytz.timezone('America/New_York')
 
-    @commands.command(name='covid', aliases=['covid-19', 'covid19'])
-    async def covid(self, ctx):
+    @cog_ext.cog_slash(name="covid", description="COVID Information")
+    async def covid(self, ctx: SlashContext):
         """COVID-19 exposure checklist."""
 
         ts = dt.datetime.now(self.tz).strftime('%d-%b-%y %H:%M:%S')
@@ -41,15 +39,19 @@ class CovidCog(commands.Cog, name='COVID-19 info'):
         
         embed.set_footer(text="Made in Python with discord.py@rewrite | https://github.com/tinfins/", icon_url="http://i.imgur.com/5BFecvA.png")
 
-        await ctx.author.send(content="**COVID-19 Information**", embed=embed)
+        self.logger.info(f"{ts} EST: {ctx.author} executed '/covid'\n")
+        await ctx.send(content="**COVID-19 Information**", embed=embed, hidden=True)
 
-        if not isinstance(ctx.channel, discord.channel.DMChannel):
-            await ctx.message.delete()
+    @covid.error
+    async def covid_error(self, ctx: SlashContext, error):
+        """
+        Error catcher for covid command
+        :param ctx:
+        :param error:
+        """
+        msg = f'covid error: {error}'
+        await ctx.send(msg, hidden=True)
 
-        print(f"{ts} EST: {ctx.author} executed '/covid'\n")
 
-
-# The setup fucntion below is neccesarry. Remember we give bot.add_cog() the name of the class in this case SimpleCog.
-# When we load the cog, we use the name of the file.
 def setup(bot):
     bot.add_cog(CovidCog(bot))
