@@ -88,6 +88,24 @@ class Admin(commands.Cog, name='Admin'):
         msg = f'reload module error: {error}'
         await ctx.send(msg, hidden=True)
 
+    @cog_ext.cog_slash(name="help", description="67HS Bot Help")
+    async def help(self, ctx: SlashContext):
+        """
+        /help - Help file
+        """
+        embed = discord.Embed(
+            title="⚠️ 67HS Bot Commands:",
+            description="All 67HS Bot commands",
+            color=0xED4245,
+        )
+        embed.add_field(name="/covid", value="   - Information on COVID-19 testing")
+        embed.add_field(name="/college", value="   - Information on College and TA.")
+        embed.add_field(name="/muster", value="   - Muster electronically in Discord.")
+        embed.add_field(name=" These commands are limited:", value="Supervisor role and above")
+        embed.add_field(name="/navadmin", value="   - Post NAVADMIN for everyone. ex. /navadmin 'URL'")
+        embed.set_footer(text="Made with Python | https://github.com/tinfins/",
+                         icon_url="https://i.imgur.com/5BFecvA.png")
+        return await ctx.send(embed=embed)
 
 def setup(bot):
     bot.add_cog(Admin(bot))
